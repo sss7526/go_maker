@@ -195,7 +195,7 @@ Contributions to this repository are welcome! If you have suggestions, feature r
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the [MIT License](./LICENSE).
 
 ---
 
