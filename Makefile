@@ -47,7 +47,7 @@ help:
 	echo "$$BORDER"; \
     SPACES=$$((($$COLUMNS-43)/2)); printf "%*s%s\n" $$SPACES "" "COMMANDS FOR GO PROJECT MANAGEMENT"; \
 	echo "$$BORDER"; \
-	echo "     SOURCE: https://github.com/sss7526/handy_scripts"; \
+	echo "     SOURCE: https://github.com/sss7526/go_maker"; \
 	echo ""; \
 	echo "  🛠  SETUP AND MAINTENANCE:"; \
 	echo "      install       Install the latest Go version (if not installed)."; \
