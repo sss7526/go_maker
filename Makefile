@@ -255,6 +255,7 @@ vulncheck: govulncheck-install
 			echo "The repository is currently linked to the template upstream ($(TEMPLATE_REPO_URL))."; \
 			echo "Resetting .git and initializing a new Git repository..."; \
 			rm -rf .git; \
+			rm LICENSE README.md; \
 			git init; \
 			echo "Git repository has been reset and initialized."; \
 		else \
@@ -263,6 +264,7 @@ vulncheck: govulncheck-install
 	else \
 		echo "No .git directory found. Initializing a new Git repository..."; \
 		git init; \
+		rm LICENSE README.md; \
 		echo "New Git repository initialized."; \
 	fi
 
