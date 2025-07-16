@@ -187,15 +187,16 @@ vulncheck: govulncheck-install
 
 .generate-go-mod:
 	@if [ ! -f go.mod ]; then \
-		echo "Initializing Go module with name: $(MODULE_NAME)..."; \
+		echo -e "\033[34mInitializing Go module with name: $(MODULE_NAME)...\033[0m"; \
 		go mod init $(MODULE_NAME); \
+		echo -e "\033[32mgo.mod created.\033[0m"; \
 	else \
-		echo "go.mod already exists. Skipping go mod init."; \
+		echo -e "\033[33mgo.mod already exists. Skipping go mod init.\033[0m"; \
 	fi
 
 .generate-main-go:
 	@if [ ! -f main.go ]; then \
-		echo "Creating main.go with a Hello World program..."; \
+		echo -e "\033[34mCreating main.go with a Hello World program...\033[0m"; \
 		printf "%s\n" \
 		"package main" \
 		"" \
@@ -204,14 +205,14 @@ vulncheck: govulncheck-install
 		"func main() {" \
 		"    fmt.Println(\"Hello, World!\")" \
 		"}" > main.go; \
-		echo "main.go created."; \
+		echo -e "\033[32mmain.go created.\033[0m"; \
 	else \
-		echo "main.go already exists. Skipping creation."; \
+		echo -e "\033[33mmain.go already exists. Skipping creation.\033[0m"; \
 	fi
 
 .generate-main-test-go:
 	@if [ ! -f main_test.go ]; then \
-		echo "Creating main_test.go with a basic test..."; \
+		echo -e "\033[34mCreating main_test.go with a basic test...\033[0m"; \
 		printf "%s\n" \
 		"package main" \
 		"" \
@@ -244,30 +245,30 @@ vulncheck: govulncheck-install
 		"        t.Errorf(\"Expected %q but got %q\", expected, actual)" \
 		"    }" \
 		"}" > main_test.go; \
-		echo "main_test.go created."; \
+		echo -e "\033[32mmain_test.go created.\033[0m"; \
 	else \
-		echo "main_test.go already exists. Skipping creation."; \
+		echo -e "\033[33mmain_test.go already exists. Skipping creation.\033[0m"; \
 	fi
 
 .initialize-git:
 	@if [ -d .git ]; then \
 		if git remote get-url origin 2>/dev/null | grep -q "^$(TEMPLATE_REPO_URL)$$"; then \
-			echo "The repository is currently linked to the template upstream ($(TEMPLATE_REPO_URL))."; \
-			echo "Resetting .git and initializing a new Git repository..."; \
+			echo -e "\033[31mThe repository is currently linked to the template upstream ($(TEMPLATE_REPO_URL)).\033[0m"; \
+			echo -e "\033[34mResetting .git and initializing a new Git repository...\033[0m"; \
 			rm -rf .git; \
 			[ -f LICENSE ] && rm LICENSE; \
 			[ -f README.md ] && rm README.md; \
 			git init -b main; \
-			echo "Git repository has been reset and initialized."; \
+			echo -e "\033[32mGit repository has been reset and initialized.\033[0m"; \
 		else \
-			echo "The repository is not linked to the original upstream. Skipping Git reset."; \
+			echo -e "\033[33mThe repository is not linked to the original upstream. Skipping Git reset.\033[0m"; \
 		fi \
 	else \
-		echo "No .git directory found. Initializing a new Git repository..."; \
+		echo -e "\033[34mNo .git directory found. Initializing a new Git repository...\033[0m"; \
 		git init -b main; \
 		[ -f LICENSE ] && rm LICENSE; \
 		[ -f README.md ] && rm README.md; \
-		echo "New Git repository initialized."; \
+		echo -e "\033[32mNew Git repository initialized.\033[0m"; \
 	fi
 
 ## Initialize a new Go project in the current directory
