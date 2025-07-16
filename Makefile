@@ -184,15 +184,15 @@ vulncheck: govulncheck-install
 	$(GOVULNCHECK_BINARY) -show verbose ./...
 
 
-
-## Initialize a new Go project in the current directory
-mod-init: .validate_go_installed
+.generate-go-mod:
 	@if [ ! -f go.mod ]; then \
 		echo "Initializing Go module with name: $(MODULE_NAME)..."; \
 		go mod init $(MODULE_NAME); \
 	else \
 		echo "go.mod already exists. Skipping go mod init."; \
 	fi
+
+.generate-main-go:
 	@if [ ! -f main.go ]; then \
 		echo "Creating main.go with a Hello World program..."; \
 		printf "%s\n" \
@@ -207,6 +207,49 @@ mod-init: .validate_go_installed
 	else \
 		echo "main.go already exists. Skipping creation."; \
 	fi
+
+.generate-main-test-go:
+	@if [ ! -f main_test.go ]; then \
+		echo "Creating main_test.go with a basic test..."; \
+		printf "%s\n" \
+		"package main" \
+		"" \
+		"import (" \
+		"    \"testing\"" \
+		"    \"os\"" \
+		"    \"io\"" \
+		"    \"bytes\"" \
+		")" \
+		"" \
+		"func TestMainProgram(t *testing.T) {" \
+		"    // Capture standard output" \
+		"    r, w, _ := os.Pipe()" \
+		"    stdout := os.Stdout" \
+		"    os.Stdout = w" \
+		"    defer func() { os.Stdout = stdout }()" \
+		"" \
+		"    main()" \
+		"" \
+		"    // Close the pipe and read the output" \
+		"    w.Close()" \
+		"    var buf bytes.Buffer" \
+		"    io.Copy(&buf, r)" \
+		"    r.Close()" \
+		"" \
+		"    // Verify output" \
+		"    expected := \"Hello, World!\\n\"" \
+		"    actual := buf.String()" \
+		"    if actual != expected {" \
+		"        t.Errorf(\"Expected %q but got %q\", expected, actual)" \
+		"    }" \
+		"}" > main_test.go; \
+		echo "main_test.go created."; \
+	else \
+		echo "main_test.go already exists. Skipping creation."; \
+	fi
+
+## Initialize a new Go project in the current directory
+mod-init: .validate_go_installed .generate-go-mod .generate-main-go .generate-main-test-go
 
 ## Clean up go.mod and go.sum files
 mod-tidy: .validate_go_installed
