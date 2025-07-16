@@ -255,16 +255,18 @@ vulncheck: govulncheck-install
 			echo "The repository is currently linked to the template upstream ($(TEMPLATE_REPO_URL))."; \
 			echo "Resetting .git and initializing a new Git repository..."; \
 			rm -rf .git; \
-			rm LICENSE README.md; \
-			git init; \
+			[ -f LICENSE ] && rm LICENSE; \
+			[ -f README.md ] && rm README.md; \
+			git init -b main; \
 			echo "Git repository has been reset and initialized."; \
 		else \
 			echo "The repository is not linked to the original upstream. Skipping Git reset."; \
 		fi \
 	else \
 		echo "No .git directory found. Initializing a new Git repository..."; \
-		git init; \
-		rm LICENSE README.md; \
+		git init -b main; \
+		[ -f LICENSE ] && rm LICENSE; \
+		[ -f README.md ] && rm README.md; \
 		echo "New Git repository initialized."; \
 	fi
 
