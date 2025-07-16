@@ -65,6 +65,12 @@ help:
 	echo "      vulncheck     Analyze dependencies for vulnerabilities (via govulncheck)."; \
 	echo ""; \
 	echo "  📖 MISCELLANEOUS:"; \
+	echo "      run           Run the project's main entry point (main.go)"; \
+	echo "      test          Run all tests recursively across all packages."; \
+	echo "      build         Build the project and output the binary to $(LOCAL_BIN)$(MODULE_NAME)."; \
+	echo "      ex            Execute the built binary."; \
+	echo "      tree          Generate a directory structure summary and save it to tree.txt."; \
+	echo "      clean         Remove the compiled binary from $(LOCAL_BIN)."; \
 	echo "      help          Display this help screen."; \
 	echo ""; \
 	echo "$$BORDER"; \
@@ -177,6 +183,8 @@ vulncheck: govulncheck-install
 	@echo "Running govulncheck vulnerability scan in verbose mode..."; \
 	$(GOVULNCHECK_BINARY) -show verbose ./...
 
+
+
 ## Initialize a new Go project in the current directory
 mod-init: .validate_go_installed
 	@if [ ! -f go.mod ]; then \
@@ -184,6 +192,20 @@ mod-init: .validate_go_installed
 		go mod init $(MODULE_NAME); \
 	else \
 		echo "go.mod already exists. Skipping go mod init."; \
+	fi
+	@if [ ! -f main.go ]; then \
+		echo "Creating main.go with a Hello World program..."; \
+		printf "%s\n" \
+		"package main" \
+		"" \
+		"import \"fmt\"" \
+		"" \
+		"func main() {" \
+		"    fmt.Println(\"Hello, World!\")" \
+		"}" > main.go; \
+		echo "main.go created."; \
+	else \
+		echo "main.go already exists. Skipping creation."; \
 	fi
 
 ## Clean up go.mod and go.sum files
