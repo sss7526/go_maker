@@ -164,6 +164,7 @@ After running `make mod-init`, your project will have the following structure:
 ├── go.mod
 ├── main.go
 ├── main_test.go
+├── .gitignore
 └── .git/
 ```
 
