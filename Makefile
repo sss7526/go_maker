@@ -16,7 +16,7 @@ LINT_PACKAGE=github.com/golangci/golangci-lint/cmd/$(GOLANGCI_LINT_BINARY)
 # Module name for `go mod init` and the executable
 MODULE_NAME=$(shell basename $(PWD))
 LOCAL_BIN=~/.local/bin/
-TEMPLATE_REPO_URL := git@github.com:sss7526/go_maker.git
+TEMPLATE_REPO_URL := https://github.com/sss7526/go_maker.git
 
 .PHONY: all install update uninstall help .validate_latest \
 		govulncheck-install golangci-lint-install tool-install \
