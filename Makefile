@@ -16,6 +16,7 @@ LINT_PACKAGE=github.com/golangci/golangci-lint/cmd/$(GOLANGCI_LINT_BINARY)
 # Module name for `go mod init` and the executable
 MODULE_NAME=$(shell basename $(PWD))
 LOCAL_BIN=~/.local/bin/
+TEMPLATE_REPO_URL := git@github.com:sss7526/go_maker.git
 
 .PHONY: all install update uninstall help .validate_latest \
 		govulncheck-install golangci-lint-install tool-install \
@@ -248,8 +249,25 @@ vulncheck: govulncheck-install
 		echo "main_test.go already exists. Skipping creation."; \
 	fi
 
+.initialize-git:
+	@if [ -d .git ]; then \
+		if git remote get-url origin 2>/dev/null | grep -q "^$(TEMPLATE_REPO_URL)$$"; then \
+			echo "The repository is currently linked to the template upstream ($(TEMPLATE_REPO_URL))."; \
+			echo "Resetting .git and initializing a new Git repository..."; \
+			rm -rf .git; \
+			git init; \
+			echo "Git repository has been reset and initialized."; \
+		else \
+			echo "The repository is not linked to the original upstream. Skipping Git reset."; \
+		fi \
+	else \
+		echo "No .git directory found. Initializing a new Git repository..."; \
+		git init; \
+		echo "New Git repository initialized."; \
+	fi
+
 ## Initialize a new Go project in the current directory
-mod-init: .validate_go_installed .generate-go-mod .generate-main-go .generate-main-test-go
+mod-init: .validate_go_installed .generate-go-mod .generate-main-go .generate-main-test-go .initialize-git
 
 ## Clean up go.mod and go.sum files
 mod-tidy: .validate_go_installed
