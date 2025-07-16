@@ -261,7 +261,7 @@ vulncheck: govulncheck-install
 			git init -b main; \
 			echo -e "\033[32mGit repository has been reset and initialized.\033[0m"; \
 		else \
-			echo -e "\033[33mThe repository is not linked to the original upstream. Skipping Git reset.\033[0m"; \
+			echo -e "\033[33mThe repository is not linked to the original go_maker template upstream. Skipping Git reset.\033[0m"; \
 		fi \
 	else \
 		echo -e "\033[34mNo .git directory found. Initializing a new Git repository...\033[0m"; \
